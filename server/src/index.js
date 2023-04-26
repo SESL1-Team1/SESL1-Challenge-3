@@ -22,6 +22,21 @@ const setWordSchema = new mongoose.Schema({
 });
 const SetWord = mongoose.model("setword", setWordSchema);
 
+const leaderboardSchema = new mongoose.Schema({
+  name: String,
+  score: Number,
+});
+const LeaderBoard = mongoose.model("leaderboard", leaderboardSchema);
+
+// const player1 = new LeaderBoard({
+//   name: "saumya",
+//   score: 9,
+// });
+// player1.save();
+
+// {
+//   "word":"sample word"
+// }
 app.post("/setWord", (req, res) => {
   try {
     // console.info(req.body);
@@ -42,6 +57,9 @@ app.post("/setWord", (req, res) => {
   }
 });
 
+// {
+//   "uuidForWord":"sample uuid"
+// }
 app.post("/getWord", (req, res) => {
   try {
     // console.info(req.body);
@@ -57,6 +75,38 @@ app.post("/getWord", (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).send({ message: "server error for getting word" });
+  }
+});
+
+app.get("/getLeaderboard", (req, res) => {
+  try {
+    console.info("get leaderboard ");
+    LeaderBoard.find({}).then(async (entries) => {
+      res.status(200).send({ message: entries });
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ message: "server error for getting leaderboard" });
+  }
+});
+
+// {
+//   "name":"sample name",
+//   "score":"10"
+// }
+app.post("/setLeaderboard", (req, res) => {
+  try {
+    const { name, score } = req.body;
+    console.info("set leaderboard name for", name, score);
+    const player = new LeaderBoard({
+      name: name,
+      score: score,
+    });
+    player.save();
+    res.status(200).send({ message: "added to leaderboard" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ message: "server error for adding to leaderboard" });
   }
 });
 
