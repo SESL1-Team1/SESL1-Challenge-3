@@ -17,7 +17,8 @@
     "express-async-handler": "^1.2.0",
     "ghenv": "^0.1.6",
     "jsonwebtoken": "^9.0.0",
-    "mongoose": "^7.0.0"
+    "mongoose": "^7.0.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
