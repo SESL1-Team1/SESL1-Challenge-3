@@ -16,6 +16,8 @@ import {
 import { Copy } from 'iconoir-react';
 import LeaderBoard from '../components/leaderboard';
 import { Leader } from '../components/leaderboard';
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 let testLeaderData:Leader[] = [
     {name:"player1", wrongGuesses:3},
@@ -32,14 +34,29 @@ let testLeaderData:Leader[] = [
 
 
 const Home = ()=>{
-    // const static_leaders:Leader[] = useMemo(()=>{
-    //     testLeaderData.sort(
-    //         function (object1:Leader, object2:Leader) {
-    //             return object1.wrongGuesses - object2.wrongGuesses;
-    //         }   
-    //     )
-    //     return static_leaders;
-    // }, [testLeaderData])
+    const [leadersRaw, setLeadersRaw] = useState<Leader[]>([]);
+    const sorted_leaders:Leader[] = useMemo(()=>{
+        const leaders = testLeaderData.sort(
+            function (object1:Leader, object2:Leader) {
+                return object1.wrongGuesses - object2.wrongGuesses;
+            }   
+        ).slice(5);
+        return leaders;
+    }, [leadersRaw])
+
+    useEffect(()=>{
+        const fetchLeaderBoard = async()=>{
+            const response = await axios.get("http://localhost:9002/getLeaderboard", {});
+            if (response.status === 200 || 304) {
+                const data = response.data.message;
+                let unsorted_leaders:Leader[] = data.map((l: {_id:string; name: string; score: number;}) => { return {name:l.name, wrongGuesses:l.score} });
+                setLeadersRaw(unsorted_leaders);
+            }else{
+                console.log(response.data.message);
+            }
+        }
+        fetchLeaderBoard();
+    });
 
     //sorting func inside useMemo for testing
     testLeaderData.sort(
@@ -53,19 +70,29 @@ const Home = ()=>{
     const [customWord, setCustomWord] = useState("");
     const isError = !customWord || !customWord?.trim() || !/^[a-zA-Z ]+$/.test(customWord)
     const [enterWordDisabled, setEnterWordDisabled] = useState(false);
-    const [customLink, setCustomLink] = useState(null);
+    const [customLink, setCustomLink] = useState("");
     const [isLinkLoading, setLinkLoading] = useState(true);
 
     const handleInputChange = (e:any) => setCustomWord(e.target.value);
-    const handleWordSet = () => {
+    const handleWordSet = async () => {
         setEnterWordDisabled(true);
         setLinkLoading(true);
         //1. request link
-        //2. set link
-
-        //3. set link not loading
-        //setLinkLoading(false);
+        const response = await axios.post("http://localhost:9002/setWord", {
+            word: customWord,
+        });
+        if (response.status === 200 || 304) {
+            //2. set link
+            setCustomLink(`http:/localhost:3000/${response.data.message}`);
+            console.log(response.data.message);
+            //3. set link not loading
+            setLinkLoading(false);
+        }else{
+            alert("An internet error has occurred. Please retry!");
+            handleReset();
+        }   
     }
+
     const handleCopy = () => {
         if (!customLink){
             //almost impossible to encounter this situation
@@ -76,17 +103,19 @@ const Home = ()=>{
         }
     }
     const handleReset = () => {
-        setCustomLink(null);
+        setCustomLink("");
         setLinkLoading(true);
         setCustomWord("");
         setEnterWordDisabled(false);
     }
 
+    const navigate = useNavigate(); 
+
     return(
         <>  
             <Grid height={"100vh"} templateColumns={"30% auto"} templateAreas={`"board main"`}>
                 <GridItem area={'board'} height={"100%"} width={"100%"}>
-                    <LeaderBoard data={testLeaderData.slice(5)}/>
+                    <LeaderBoard data={sorted_leaders}/>
                 </GridItem> 
                 <GridItem area={'main'}>
                     <Center my="25%">
@@ -98,7 +127,7 @@ const Home = ()=>{
                                 </Heading>
                             </Center>
                             <Center> 
-                                <Button size='lg' colorScheme='yellow' mt='24px'>
+                                <Button size='lg' colorScheme='yellow' mt='24px' onClick={()=>{ navigate("/") }}>
                                     Play Now
                                 </Button>
                             </Center>
@@ -126,7 +155,7 @@ const Home = ()=>{
                                         <Button colorScheme='orange' mr={3} onClick={handleWordSet} isDisabled={isError || enterWordDisabled}>
                                             Set
                                         </Button>
-                                        <Button colorScheme='yellow' textColor={"black"} mr={3} disabled={!enterWordDisabled} isLoading={enterWordDisabled && customLink==null && isLinkLoading} onClick={handleCopy}><Copy/>Copy Link</Button>
+                                        <Button colorScheme='yellow' textColor={"black"} mr={3} disabled={!enterWordDisabled} isLoading={enterWordDisabled && customLink==="" && isLinkLoading} onClick={handleCopy}><Copy/>Copy Link</Button>
                                         <Button colorScheme='white' textColor={"black"} variant = "outline" onClick={handleReset} isDisabled={enterWordDisabled}>
                                             Reset
                                         </Button>
