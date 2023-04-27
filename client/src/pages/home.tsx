@@ -41,7 +41,7 @@ const Home = ()=>{
     //     return static_leaders;
     // }, [testLeaderData])
 
-    //for testing
+    //sorting func inside useMemo for testing
     testLeaderData.sort(
         function (object1:Leader, object2:Leader) {
             return object1.wrongGuesses - object2.wrongGuesses;
@@ -56,7 +56,7 @@ const Home = ()=>{
     const [customLink, setCustomLink] = useState(null);
     const [isLinkLoading, setLinkLoading] = useState(true);
 
-    const handleInputChange = (e:any) => setCustomWord(e.target.value)
+    const handleInputChange = (e:any) => setCustomWord(e.target.value);
     const handleWordSet = () => {
         setEnterWordDisabled(true);
         setLinkLoading(true);
@@ -71,6 +71,7 @@ const Home = ()=>{
             //almost impossible to encounter this situation
             alert("Set your word first!");
         }else{
+            //copy the link to clipboard
             navigator.clipboard.writeText(customLink);
         }
     }
@@ -126,7 +127,7 @@ const Home = ()=>{
                                             Set
                                         </Button>
                                         <Button colorScheme='yellow' textColor={"black"} mr={3} disabled={!enterWordDisabled} isLoading={enterWordDisabled && customLink==null && isLinkLoading} onClick={handleCopy}><Copy/>Copy Link</Button>
-                                        <Button colorScheme='white' textColor={"black"} mr={3} variant = "outline" onClick={handleReset} isDisabled={enterWordDisabled}>
+                                        <Button colorScheme='white' textColor={"black"} variant = "outline" onClick={handleReset} isDisabled={enterWordDisabled}>
                                             Reset
                                         </Button>
                                     </ModalFooter>
