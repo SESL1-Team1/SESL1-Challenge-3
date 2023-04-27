@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
+import { ChakraProvider } from "@chakra-ui/react";
+import HangmanDrawing from "./components/HangmanDrawing";
+import Keyboard from "./components/Keyboard";
 import Hangman from "./pages/Hangman";
 
 function App() {
+
   return (
-    <div className="App">
+    <ChakraProvider>
       <Hangman />
-    </div>
+      
+      <Keyboard />
+    </ChakraProvider>
   )
 }
 

@@ -21,6 +21,7 @@
     "react-icons": "^4.7.1",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.8.2",
+    "react-simple-keyboard": "^3.5.64",
     "react-toastify": "^9.1.1",
     "vite-plugin-svgr": "^2.4.0"
   },
