@@ -1,5 +1,3 @@
-import Hangman from "../pages/Hangman";
-
 type HangmanDrawingProps = {
     wrongGuesses: number;
 };

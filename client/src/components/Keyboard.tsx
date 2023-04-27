@@ -1,10 +1,13 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import "react-simple-keyboard/build/css/index.css";
 import KeyboardReact from "react-simple-keyboard";
 
-export const guessedLetters = [] as string[];
+interface KeyboardProps {
+    guessedLetters: string[];
+    onKeyPress: (button: string) => void;
+}
 
-const Keyboard = () => {
+const Keyboard = ({ guessedLetters, onKeyPress }: KeyboardProps) => {
     const [input, setInput] = useState<string>("");
     const [disabledKeys, setDisabledKeys] = useState<string[]>([]);
     const keyboard = useRef();
@@ -15,23 +18,26 @@ const Keyboard = () => {
 
     const handleKeyPress = (button: string) => {
         setDisabledKeys(prevDisabledKeys => [...prevDisabledKeys, button]);
-        guessedLetters.push(button);
-        console.log("gussedLetters: " + guessedLetters)
+        onKeyPress(button);
     };
 
-    const onKeyPress = (button: string) => {
+    const onKeyPressWrapper = (button: string) => {
         if (disabledKeys.includes(button)) {
             return
         }
         handleKeyPress(button);
     };
 
+    useEffect(() => {
+        setDisabledKeys(guessedLetters);
+    }, [guessedLetters]);
+
     return (
         <div style={{ maxWidth: "500px" }}>
             <KeyboardReact
                 keyboardRef={(r: any) => (keyboard as any).current = r}
                 onChange={onChange}
-                onKeyPress={onKeyPress}
+                onKeyPress={onKeyPressWrapper}
                 layout={{
                     default: [
                         "a b c d e f g h i",
@@ -49,7 +55,6 @@ const Keyboard = () => {
             />
         </div>
     );
-    
 };
 
 export default Keyboard;

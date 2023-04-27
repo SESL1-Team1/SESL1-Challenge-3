@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import HangmanDrawing from "../components/HangmanDrawing";
 import HangmanWord from "../components/HangmanWord";
+import Keyboard from "../components/Keyboard";
 import words from "../wordList.json";
-import { guessedLetters } from "../components/Keyboard";
 
 interface Word {
   category: keyof typeof words;
@@ -11,6 +11,7 @@ interface Word {
 
 const Hangman = () => {
   const [wordToGuess, setWordToGuess] = useState<Word>({ category: "Animals", word: "" });
+  const [guessedLetters, setGuessedLetters] = useState<string[]>([]);
 
   const wrongGuesses = guessedLetters.filter(letter => !wordToGuess.word.includes(letter)).length;
 
@@ -25,33 +26,48 @@ const Hangman = () => {
     setWordToGuess(getRandomWord());
   }, []);
 
+  const handleKeyPress = (button: string) => {
+    setGuessedLetters(prevGuessedLetters => [...prevGuessedLetters, button]);
+  };
+
   useEffect(() => {
     if (wrongGuesses === 6) {
       alert("You lose!");
       setWordToGuess(getRandomWord());
+      setGuessedLetters([]);
     }
   }, [wrongGuesses]);
 
-  // useEffect(() => {
-  //   if (wordToGuess.word.split("").every(letter => guessedLetters.includes(letter))) {
-  //     alert("You win!");
-  //     setWordToGuess(getRandomWord());
-  //   }
-  // }, [guessedLetters]); bugged, fix later
+  useEffect(() => {
+    if (wordToGuess.word) {
+      const uniqueLetters = new Set(wordToGuess.word.toLowerCase());
+      const guessedUniqueLetters = new Set(guessedLetters.map(l => l.toLowerCase()));
 
-  console.log(wordToGuess);
+      const checkWin = () => {
+        if ([...uniqueLetters].every(letter => guessedUniqueLetters.has(letter))) {
+          if (window.confirm("You Win! Play Again?")) {
+            setWordToGuess(getRandomWord());
+            setGuessedLetters([]);
+          }
+        }
+      }
+
+      const timeout = setTimeout(checkWin, 750);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [guessedLetters, wordToGuess]);
 
   return (
   <>
     <div>
       <h1>Hangman</h1>
-      <h2>{wordToGuess.category}</h2>
-      <h3>{wordToGuess.word}</h3>
+      <h2>Hint: {wordToGuess.category}</h2>
     </div>
     <div>
-    {wrongGuesses}
     <HangmanDrawing wrongGuesses={wrongGuesses} />
     <HangmanWord wordToGuess={wordToGuess.word} guessedLetters={guessedLetters}/>
+    <Keyboard guessedLetters={guessedLetters} onKeyPress={handleKeyPress} />
     </div>
   </>
   );

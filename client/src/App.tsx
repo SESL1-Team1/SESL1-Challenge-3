@@ -9,8 +9,6 @@ function App() {
   return (
     <ChakraProvider>
       <Hangman />
-      
-      <Keyboard />
     </ChakraProvider>
   )
 }
