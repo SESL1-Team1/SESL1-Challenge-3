@@ -44,12 +44,15 @@ const Home = ()=>{
             const response = await axios.get(`${server_url}/getLeaderboard`, {});
             if (response.status === 200 || 304) {
                 const data = response.data.message;
+                console.log(data);
                 let unsorted_leaders:Leader[] = data.map((l: {_id:string; name: string; score: number;}) => { return {name:l.name, wrongGuesses:l.score} });
+                console.log(unsorted_leaders);
                 const leaders = unsorted_leaders.sort(
                     function (object1:Leader, object2:Leader) {
                         return object1.wrongGuesses - object2.wrongGuesses;
                     }   
-                ).slice(5);
+                ).slice(0,5);
+                console.log("leader",leaders);
                 setLeaders(leaders);
             }else{
                 console.log(response.status);
@@ -57,7 +60,7 @@ const Home = ()=>{
             }
         }
         fetchLeaderBoard();
-    });
+    },[]);
 
     // Custom words modal
     const { isOpen, onOpen, onClose } = useDisclosure()
