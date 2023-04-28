@@ -48,7 +48,7 @@ const Keyboard = ({ guessedLetters, onKeyPress }: KeyboardProps) => {
                 disableButtonHold={true}
                 buttonTheme={[
                     {
-                      class: "hg-grey",
+                      class: "hg-yellow",
                       buttons: disabledKeys.join(" "),
                     },
                   ]}

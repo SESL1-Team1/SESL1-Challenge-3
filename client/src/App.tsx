@@ -15,6 +15,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/play" element={<Hangman />} />
+            <Route path="/play/:customWordUUID" element={<Hangman />}/>
           </Routes>
         </BrowserRouter>
       </div>

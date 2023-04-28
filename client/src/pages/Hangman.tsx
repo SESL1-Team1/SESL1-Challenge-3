@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from "react";
+import {useParams } from 'react-router-dom';
+import axios from "axios";
 import HangmanDrawing from "../components/HangmanDrawing";
 import HangmanWord from "../components/HangmanWord";
 import Keyboard from "../components/Keyboard";
 import words from "../wordList.json";
 
 interface Word {
-  category: keyof typeof words;
+  category: keyof typeof words | "Customized";
   word: string;
 }
 
+const server_url = "http://localhost:9002";
+
 const Hangman:React.FC = () => {
+  const { customWordUUID } = useParams();
   const [wordToGuess, setWordToGuess] = useState<Word>({ category: "Animals", word: "" });
   const [guessedLetters, setGuessedLetters] = useState<string[]>([]);
 
@@ -23,7 +28,26 @@ const Hangman:React.FC = () => {
   };
   
   useEffect(() => {
-    setWordToGuess(getRandomWord());
+    const getTaskRequest = async (id:any) => {
+      const response = await axios.post(`${server_url}/getWord`, {
+        uuidForWord: id,
+      });
+      return response;
+    };
+    const fetchWord = async () => {
+      const response = await getTaskRequest(customWordUUID);
+      console.log(response.data);
+      if (response.status === 200 || 304) {
+        setWordToGuess({category:"Customized",word:response.data.message});
+      }else{
+        alert("Sorry, the word your are finding is gone!")
+      }
+    };
+    if (customWordUUID){
+      fetchWord();
+    }else{
+      setWordToGuess(getRandomWord());
+    }
   }, []);
 
   const handleKeyPress = (button: string) => {

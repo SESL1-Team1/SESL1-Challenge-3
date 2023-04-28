@@ -33,7 +33,7 @@ let testLeaderData:Leader[] = [
     {name:"player10", wrongGuesses:4},
 ];
 
-const deployment_url = "http://localhost:3001/"; //Notice the ending slash!
+const deployment_url = "http://localhost:3000/play/:"; //Notice the ending slash!
 const server_url = "http://localhost:9002";
 
 const Home = ()=>{
