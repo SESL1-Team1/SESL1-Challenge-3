@@ -33,19 +33,11 @@ let testLeaderData:Leader[] = [
     {name:"player10", wrongGuesses:4},
 ];
 
-const deployment_url = "http:/localhost:3000/"; //Notice the ending slash!
+const deployment_url = "http://localhost:3000/play/:"; //Notice the ending slash!
 const server_url = "http://localhost:9002";
 
 const Home = ()=>{
-    const [leadersRaw, setLeadersRaw] = useState<Leader[]>([]);
-    const sorted_leaders:Leader[] = useMemo(()=>{
-        const leaders = testLeaderData.sort(
-            function (object1:Leader, object2:Leader) {
-                return object1.wrongGuesses - object2.wrongGuesses;
-            }   
-        ).slice(5);
-        return leaders;
-    }, [leadersRaw])
+    const [sorted_leaders, setLeaders] = useState<Leader[]>([]);
 
     useEffect(()=>{
         const fetchLeaderBoard = async()=>{
@@ -53,8 +45,14 @@ const Home = ()=>{
             if (response.status === 200 || 304) {
                 const data = response.data.message;
                 let unsorted_leaders:Leader[] = data.map((l: {_id:string; name: string; score: number;}) => { return {name:l.name, wrongGuesses:l.score} });
-                setLeadersRaw(unsorted_leaders);
+                const leaders = unsorted_leaders.sort(
+                    function (object1:Leader, object2:Leader) {
+                        return object1.wrongGuesses - object2.wrongGuesses;
+                    }   
+                ).slice(5);
+                setLeaders(leaders);
             }else{
+                console.log(response.status);
                 console.log(response.data.message);
             }
         }
@@ -105,12 +103,12 @@ const Home = ()=>{
         setEnterWordDisabled(false);
     }
 
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
 
     return(
         <>  
             <Grid height={"100vh"} templateColumns={"30% auto"} templateAreas={`"board main"`}>
-                <GridItem area={'board'} height={"100%"} width={"100%"}>
+                <GridItem area={'board'} h={"100%"} minH={"80%vh"} width={"100%"} py={0}>
                     <LeaderBoard data={sorted_leaders}/>
                 </GridItem> 
                 <GridItem area={'main'}>
@@ -124,7 +122,7 @@ const Home = ()=>{
                             </Center>
                             <Center> 
                                 {/* navigator target may need modification */}
-                                <Button size='lg' colorScheme='yellow' mt='24px' onClick={()=>{ navigate("/") }}> 
+                                <Button size='lg' colorScheme='yellow' mt='24px' onClick={()=>{navigate("/play")}}> 
                                     Play Now
                                 </Button>
                             </Center>
@@ -152,8 +150,8 @@ const Home = ()=>{
                                         <Button colorScheme='orange' mr={3} onClick={handleWordSet} isDisabled={isError || enterWordDisabled}>
                                             Set
                                         </Button>
-                                        <Button colorScheme='yellow' textColor={"black"} mr={3} disabled={!enterWordDisabled} isLoading={enterWordDisabled && customLink==="" && isLinkLoading} onClick={handleCopy}><Copy/>Copy Link</Button>
-                                        <Button colorScheme='white' textColor={"black"} variant = "outline" onClick={handleReset} isDisabled={enterWordDisabled}>
+                                        <Button colorScheme='yellow' textColor={"black"} mr={3} isDisabled={customLink===""} isLoading={enterWordDisabled && customLink==="" && isLinkLoading} onClick={handleCopy}><Copy/>Copy Link</Button>
+                                        <Button colorScheme='white' textColor={"black"} variant = "outline" onClick={handleReset} isDisabled={!enterWordDisabled}>
                                             Reset
                                         </Button>
                                     </ModalFooter>
