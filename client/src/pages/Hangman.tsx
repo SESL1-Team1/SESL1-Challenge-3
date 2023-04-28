@@ -27,7 +27,7 @@ interface Word {
   word: string;
 }
 
-const server_url = "http://localhost:9002";
+const server_url = "https://sesl1-challenge-3-production.up.railway.app/";
 
 const Hangman:React.FC = () => {
   const { customWordUUID } = useParams();
