@@ -3,13 +3,12 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import { config } from 'dotenv';
 
+const deployment_url = 'https://sesl-1-challenge-3.vercel.app';
 // import fetch from
 config();
 const app = express();
 app.use(express.json());
-app.use(cors(
-  {origin: 'https://sesl-1-challenge-3.vercel.app',}
-));
+app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 
 
@@ -40,6 +39,7 @@ const LeaderBoard = mongoose.model("leaderboard", leaderboardSchema);
 // }
 app.post("/setWord", (req, res) => {
   try {
+    res.set('Access-Control-Allow-Origin', deployment_url);
     // console.info(req.body);
     const { word } = req.body;
     if (word !== "") {
@@ -63,6 +63,7 @@ app.post("/setWord", (req, res) => {
 // }
 app.post("/getWord", (req, res) => {
   try {
+    res.set('Access-Control-Allow-Origin', deployment_url);
     // console.info(req.body);
     const { uuidForWord } = req.body;
     console.info("get word for ", uuidForWord);
@@ -81,6 +82,7 @@ app.post("/getWord", (req, res) => {
 
 app.get("/getLeaderboard", (_req, res) => {
   try {
+    res.set('Access-Control-Allow-Origin', deployment_url);
     console.info("get leaderboard ");
     LeaderBoard.find({}).then(async (entries) => {
       res.status(200).send({ message: entries });
@@ -97,6 +99,7 @@ app.get("/getLeaderboard", (_req, res) => {
 // }
 app.post("/setLeaderboard", (req, res) => {
   try {
+    res.set('Access-Control-Allow-Origin', deployment_url);
     const { name, score } = req.body;
     console.info("set leaderboard name for", name, score);
     const player = new LeaderBoard({
@@ -112,6 +115,7 @@ app.post("/setLeaderboard", (req, res) => {
 });
 
 app.get('/', (_req, res) => {
+    res.set('Access-Control-Allow-Origin', deployment_url);
     res.sendFile(__dirname + '../client/index.html');
 });
 
