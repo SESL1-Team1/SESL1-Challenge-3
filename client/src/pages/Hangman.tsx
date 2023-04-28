@@ -53,7 +53,8 @@ const Hangman:React.FC = () => {
     const fetchWord = async () => {
       const response = await getTaskRequest(customWordUUID);
       console.log(response.data);
-      if (response.status === 200 || 304) {
+      if ((response.status === 200 || 304) && response.status!==250) {
+        console.log("hi");
         setWordToGuess({category:"Customized",word:response.data.message});
       }else{
         alert("Sorry, the word your are finding is gone!")
