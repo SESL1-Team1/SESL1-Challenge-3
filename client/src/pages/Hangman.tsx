@@ -175,9 +175,10 @@ const Hangman:React.FC = () => {
         <Modal isOpen={isLosing} onClose={onClose}>
             <ModalOverlay />
             <ModalContent>
-              <ModalHeader>You lose! Nice try!</ModalHeader>
+              <ModalHeader>You lose! Nice try! </ModalHeader>
               <ModalCloseButton />
               <ModalBody>
+                  The word was: "{wordToGuess.word}" <br/>
                   Play Again?
               </ModalBody>
               <ModalFooter>
