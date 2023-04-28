@@ -111,5 +111,5 @@ app.post("/setLeaderboard", (req, res) => {
 });
 
 app.listen(process.env.PORT || 9002, () => {
-  console.log("Backend started at port 9002");
+  console.log("Backend started at port 9002");
 });

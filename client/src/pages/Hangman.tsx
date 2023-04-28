@@ -9,7 +9,7 @@ interface Word {
   word: string;
 }
 
-const Hangman = () => {
+const Hangman:React.FC = () => {
   const [wordToGuess, setWordToGuess] = useState<Word>({ category: "Animals", word: "" });
   const [guessedLetters, setGuessedLetters] = useState<string[]>([]);
 
