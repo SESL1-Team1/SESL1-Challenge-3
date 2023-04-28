@@ -114,7 +114,7 @@ app.get('/', (_req, res) => {
 });
 
 const PORT = process.env.PORT || 9002;
-mongoose.connect(process.env.MONGO_DB!).then(() => {
+mongoose.connect("mongodb+srv://sborwankar:dHBD3ULAQFhb7wNg@counter.umy2rrk.mongodb.net/level3").then(() => {
     app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 }).catch(err => {
     console.log(err);
