@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { ChakraProvider } from '@chakra-ui/react'
-import theme from "./theme.js";
+import HangmanDrawing from "./components/HangmanDrawing";
+import Keyboard from "./components/Keyboard";
+import Hangman from "./pages/Hangman";
 import Home from './pages/home.js'
+import theme from "./theme.js";
 
 function App() {
   return(

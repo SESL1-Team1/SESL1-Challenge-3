@@ -1,0 +1,63 @@
+{
+    "Animals": [
+        "puma",
+        "mongoose",
+        "gazelle",
+        "otter",
+        "squirrel",
+        "lynx",
+        "iguana",
+        "toucan",
+        "platypus",
+        "seagull"
+    ],
+    "Movies": [
+        "shrek",
+        "jumanji",
+        "zoolander",
+        "hocus pocus",
+        "austin powers",
+        "titanic",
+        "braveheart",
+        "inception",
+        "avatar",
+        "goodfellas"
+    ],
+    "Sports": [
+        "baseball",
+        "basketball",
+        "football",
+        "hockey",
+        "soccer",
+        "tennis",
+        "volleyball",
+        "badminton",
+        "handball",
+        "gymnastics"
+    ],
+    "Food": [
+        "avocado",
+        "bruschetta",
+        "croissant",
+        "fajitas",
+        "guacamole",
+        "lasagna",
+        "paella",
+        "quesadilla",
+        "ramen",
+        "sushi"
+    ],
+    "Countries": [
+        "thailand",
+        "switzerland",
+        "australia",
+        "norway",
+        "brazil",
+        "ireland",
+        "jamaica",
+        "malaysia",
+        "poland",
+        "zimbabwe"
+    ]
+}
+  

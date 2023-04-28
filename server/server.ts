@@ -5,8 +5,8 @@ const app = express();
 
 app.use(cors());
 
-app.get('/', (req, res) => {
-    res.send('Hello World!');
+app.get('/', (_req, res) => {
+    res.sendFile(__dirname + '../client/index.html');
 });
 
 app.listen(3000, () => {
