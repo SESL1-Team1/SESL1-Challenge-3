@@ -7,7 +7,9 @@ import { config } from 'dotenv';
 config();
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors(
+  {origin: 'https://sesl-1-challenge-3.vercel.app',}
+));
 app.use(express.urlencoded({ extended: false }));
 
 
