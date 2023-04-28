@@ -178,7 +178,7 @@ const Hangman:React.FC = () => {
               <ModalHeader>You lose! Nice try! </ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                  The word was: "{wordToGuess.word}" <br/>
+                  The word was: "{wordToGuess.word.charAt(0).toUpperCase() + wordToGuess.word.slice(1)}" <br/>
                   Play Again?
               </ModalBody>
               <ModalFooter>
