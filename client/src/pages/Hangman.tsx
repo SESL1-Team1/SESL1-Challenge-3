@@ -39,7 +39,7 @@ const Hangman:React.FC = () => {
   const getRandomWord = () => {
     const randomCategory = Object.keys(words)[Math.floor(Math.random() * Object.keys(words).length)] as keyof typeof words;
     const randomWord = words[randomCategory][Math.floor(Math.random() * words[randomCategory].length)];
-    console.log(randomWord);
+    
     return { category: randomCategory, word: randomWord };
   };
   
