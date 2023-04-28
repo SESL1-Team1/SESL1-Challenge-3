@@ -108,7 +108,7 @@ const Home = ()=>{
     return(
         <>  
             <Grid height={"100vh"} templateColumns={"30% auto"} templateAreas={`"board main"`}>
-                <GridItem area={'board'} height={"100%"} width={"100%"}>
+                <GridItem area={'board'} h={"100%"} minH={"80%vh"} width={"100%"} py={0}>
                     <LeaderBoard data={sorted_leaders}/>
                 </GridItem> 
                 <GridItem area={'main'}>
@@ -150,7 +150,7 @@ const Home = ()=>{
                                         <Button colorScheme='orange' mr={3} onClick={handleWordSet} isDisabled={isError || enterWordDisabled}>
                                             Set
                                         </Button>
-                                        <Button colorScheme='yellow' textColor={"black"} mr={3} disabled={!enterWordDisabled} isLoading={enterWordDisabled && customLink==="" && isLinkLoading} onClick={handleCopy}><Copy/>Copy Link</Button>
+                                        <Button colorScheme='yellow' textColor={"black"} mr={3} isDisabled={customLink===""} isLoading={enterWordDisabled && customLink==="" && isLinkLoading} onClick={handleCopy}><Copy/>Copy Link</Button>
                                         <Button colorScheme='white' textColor={"black"} variant = "outline" onClick={handleReset} isDisabled={!enterWordDisabled}>
                                             Reset
                                         </Button>
