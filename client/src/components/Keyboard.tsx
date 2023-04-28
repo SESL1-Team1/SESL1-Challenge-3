@@ -5,9 +5,10 @@ import KeyboardReact from "react-simple-keyboard";
 interface KeyboardProps {
     guessedLetters: string[];
     onKeyPress: (button: string) => void;
+    physicalKeyboard: boolean;
 }
 
-const Keyboard = ({ guessedLetters, onKeyPress }: KeyboardProps) => {
+const Keyboard = ({ guessedLetters, onKeyPress, physicalKeyboard }: KeyboardProps) => {
     const [input, setInput] = useState<string>("");
     const [disabledKeys, setDisabledKeys] = useState<string[]>([]);
     const keyboard = useRef();
@@ -53,6 +54,8 @@ const Keyboard = ({ guessedLetters, onKeyPress }: KeyboardProps) => {
                     }
                   ]}
                 theme={"hg-theme-default hg-layout-default hg-yellow"}
+                physicalKeyboardHighlight={physicalKeyboard}
+                physicalKeyboardHighlightPress={physicalKeyboard}
             />
         </div>
     );

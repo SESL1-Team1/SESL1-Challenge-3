@@ -54,7 +54,6 @@ const Hangman:React.FC = () => {
       const response = await getTaskRequest(customWordUUID);
       console.log(response.data);
       if ((response.status === 200 || 304) && response.status!==250) {
-        console.log("hi");
         setWordToGuess({category:"Customized",word:response.data.message});
       }else{
         alert("Sorry, the word your are finding is gone!")
@@ -82,20 +81,15 @@ const Hangman:React.FC = () => {
       const uniqueLetters = new Set(wordToGuess.word.toLowerCase());
       const guessedUniqueLetters = new Set(guessedLetters.map(l => l.toLowerCase()));
 
-      const checkWin = () => {
-        if ([...uniqueLetters].every(letter => guessedUniqueLetters.has(letter))) {
-          setWin(true);
-        }
+      if ([...uniqueLetters].every(letter => guessedUniqueLetters.has(letter))) {
+        setWin(true);
       }
-
-      const timeout = setTimeout(checkWin, 500);
-
-      return () => clearTimeout(timeout);
     }
   }, [guessedLetters, wordToGuess]);
 
   const [isWinning, setWin] = useState(false);
   const [isLosing, setLose] = useState(false);
+  const [isSubmitted, setSubmit] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [name, setName] = useState("");
   const isError = !name || !name?.trim();
@@ -106,12 +100,7 @@ const Hangman:React.FC = () => {
       score: wrongGuesses
     });
     if (response.status === 200 || 304) {
-      alert("Name recorded! Enjoy another game ~");
-      if (window.confirm("You Win! Play Again?")) {
-        setWin(false);
-        setWordToGuess(getRandomWord());
-        setGuessedLetters([]);
-      }
+        setSubmit(true);
     }else{
       alert("Name uploading failed. Please try again.");
     }   
@@ -122,6 +111,8 @@ const Hangman:React.FC = () => {
     navigate("/");
   }
   const handlePlayAgain = ()=> {
+    setSubmit(false);
+    setWin(false);
     setLose(false);
     setWordToGuess(getRandomWord());
     setGuessedLetters([]);
@@ -142,7 +133,7 @@ const Hangman:React.FC = () => {
               <HangmanWord wordToGuess={wordToGuess.word} guessedLetters={guessedLetters}/> 
             </Box>
             <Box mt={"10%"} height={"20%"}>
-              <Keyboard guessedLetters={guessedLetters} onKeyPress={handleKeyPress} />
+              <Keyboard guessedLetters={guessedLetters} onKeyPress={handleKeyPress} physicalKeyboard={!isWinning && !isLosing} />
             </Box>
             <Box pl={"78%"}>
               <Button colorScheme='yellow' mr={3}  onClick={handleReturn}>Return</Button>
@@ -173,12 +164,31 @@ const Hangman:React.FC = () => {
               </ModalFooter>
             </ModalContent>
         </Modal>
+        <Modal isOpen={isSubmitted} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Name submitted!</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+              Play Again?
+              </ModalBody>
+              <ModalFooter>
+                  <Button colorScheme='orange' mr={3} onClick={handlePlayAgain} isDisabled={isError}>
+                      Yes
+                  </Button>
+                  <Button colorScheme='yellow' mr={3} onClick={handleReturn}>
+                      No
+                  </Button>
+              </ModalFooter>
+            </ModalContent>
+        </Modal>
         <Modal isOpen={isLosing} onClose={onClose}>
             <ModalOverlay />
             <ModalContent>
               <ModalHeader>You lose! Nice try!</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
+                  The word was: "{wordToGuess.word}" <br />
                   Play Again?
               </ModalBody>
               <ModalFooter>
