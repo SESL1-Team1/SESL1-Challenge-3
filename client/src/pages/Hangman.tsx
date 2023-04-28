@@ -72,9 +72,7 @@ const Hangman:React.FC = () => {
 
   useEffect(() => {
     if (wrongGuesses === 6) {
-      alert("You lose!");
-      setWordToGuess(getRandomWord());
-      setGuessedLetters([]);
+      setLose(true)
     }
   }, [wrongGuesses]);
 
@@ -89,13 +87,14 @@ const Hangman:React.FC = () => {
         }
       }
 
-      const timeout = setTimeout(checkWin, 750);
+      const timeout = setTimeout(checkWin, 500);
 
       return () => clearTimeout(timeout);
     }
   }, [guessedLetters, wordToGuess]);
 
   const [isWinning, setWin] = useState(false);
+  const [isLosing, setLose] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [name, setName] = useState("");
   const isError = !name || !name?.trim();
@@ -118,8 +117,13 @@ const Hangman:React.FC = () => {
   }
 
   const navigate = useNavigate();
-  const handleReturn = ()=>{
+  const handleReturn = ()=> {
     navigate("/");
+  }
+  const handlePlayAgain = ()=> {
+    setLose(false);
+    setWordToGuess(getRandomWord());
+    setGuessedLetters([]);
   }
 
   return (
@@ -164,6 +168,24 @@ const Hangman:React.FC = () => {
                   </Button>
                   <Button colorScheme='yellow' mr={3} onClick={handleReturn}>
                       Return
+                  </Button>
+              </ModalFooter>
+            </ModalContent>
+        </Modal>
+        <Modal isOpen={isLosing} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>You lose! Nice try!</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                  Play Again?
+              </ModalBody>
+              <ModalFooter>
+                  <Button colorScheme='orange' mr={3} onClick={handlePlayAgain}>
+                      Yes
+                  </Button>
+                  <Button colorScheme='yellow' mr={3} onClick={handleReturn}>
+                      No
                   </Button>
               </ModalFooter>
             </ModalContent>

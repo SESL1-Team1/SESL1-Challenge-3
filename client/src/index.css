@@ -1,9 +1,8 @@
-.react-simple-keyboard .simple-keyboard .hg-theme-default .hg-layout-default .hg-grey{
+.hg-grey{
     pointer-events: none;
     opacity: 0.5;
 }
 
-.simple-keyboard.hg-layout-default.hg-button.hg-yellow {
-    background: #FCA510;
-    color: white;
+.hg-yellow {
+    background-color: #FCA510;
 }

@@ -48,10 +48,11 @@ const Keyboard = ({ guessedLetters, onKeyPress }: KeyboardProps) => {
                 disableButtonHold={true}
                 buttonTheme={[
                     {
-                      class: "hg-yellow",
+                      class: "hg-grey",
                       buttons: disabledKeys.join(" "),
-                    },
+                    }
                   ]}
+                theme={"hg-theme-default hg-layout-default hg-yellow"}
             />
         </div>
     );
