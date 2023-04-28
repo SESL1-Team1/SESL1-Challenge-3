@@ -50,8 +50,9 @@ const Keyboard = ({ guessedLetters, onKeyPress }: KeyboardProps) => {
                     {
                       class: "hg-grey",
                       buttons: disabledKeys.join(" "),
-                    },
+                    }
                   ]}
+                theme={"hg-theme-default hg-layout-default hg-yellow"}
             />
         </div>
     );

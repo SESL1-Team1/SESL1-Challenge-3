@@ -1,4 +1,8 @@
-.hg-grey {
+.hg-grey{
     pointer-events: none;
     opacity: 0.5;
+}
+
+.hg-yellow {
+    background-color: #FCA510;
 }
