@@ -33,7 +33,7 @@ let testLeaderData:Leader[] = [
     {name:"player10", wrongGuesses:4},
 ];
 
-const deployment_url = "http://localhost:3000/play/"; //Notice the ending slash!
+const deployment_url = "https://www.sesl-1-challenge-3.vercel.app/play/"; //Notice the ending slash!
 const server_url = "https://sesl1-challenge-3-production.up.railway.app";
 
 const Home = ()=>{
