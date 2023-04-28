@@ -27,7 +27,7 @@ interface Word {
   word: string;
 }
 
-const server_url = "http://localhost:9002";
+const server_url = "https://sesl1-challenge-3-production.up.railway.app";
 
 const Hangman:React.FC = () => {
   const { customWordUUID } = useParams();
@@ -39,7 +39,7 @@ const Hangman:React.FC = () => {
   const getRandomWord = () => {
     const randomCategory = Object.keys(words)[Math.floor(Math.random() * Object.keys(words).length)] as keyof typeof words;
     const randomWord = words[randomCategory][Math.floor(Math.random() * words[randomCategory].length)];
-    
+
     return { category: randomCategory, word: randomWord };
   };
   
@@ -188,7 +188,7 @@ const Hangman:React.FC = () => {
               <ModalHeader>You lose! Nice try!</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                  The word was: "{wordToGuess.word}" <br />
+                  The word was: "{wordToGuess.word.charAt(0).toUpperCase() + wordToGuess.word.slice(1)}" <br />
                   Play Again?
               </ModalBody>
               <ModalFooter>

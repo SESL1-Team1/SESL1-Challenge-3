@@ -34,7 +34,7 @@ let testLeaderData:Leader[] = [
 ];
 
 const deployment_url = "http://localhost:3000/play/"; //Notice the ending slash!
-const server_url = "http://localhost:9002";
+const server_url = "https://sesl1-challenge-3-production.up.railway.app";
 
 const Home = ()=>{
     const [sorted_leaders, setLeaders] = useState<Leader[]>([]);
